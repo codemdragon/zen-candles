@@ -31,8 +31,20 @@
     }
   ],
   "sizes": [
-    { "label": "60g", "price": 1500, "desc": "Your perfect little luxury." },
-    { "label": "120g", "price": 2400, "desc": "Our beloved bestseller." },
-    { "label": "220g", "price": 3600, "desc": "The grand ambiance maker." }
+    {
+      "label": "60g",
+      "price": 1500,
+      "desc": "Your perfect little luxury."
+    },
+    {
+      "label": "120g",
+      "price": 2400,
+      "desc": "Our beloved bestseller."
+    },
+    {
+      "label": "220g",
+      "price": 3600,
+      "desc": "The grand ambiance maker."
+    }
   ]
 }
