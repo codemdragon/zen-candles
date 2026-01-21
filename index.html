@@ -6,360 +6,102 @@
     <title>Zen Candles | Premium Scents</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
     <style>
-        :root {
-            --primary-red: #D32F2F;
-            --soft-red: #FFEBEE;
-            --dark-text: #212121;
-            --light-text: #757575;
-            --white: #ffffff;
-            --transition: all 0.3s ease;
-        }
-
+        :root { --primary-red: #D32F2F; --soft-red: #FFEBEE; --dark-text: #212121; --light-text: #757575; --white: #ffffff; --transition: all 0.3s ease; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: 'Lato', sans-serif;
-            color: var(--dark-text);
-            background-color: var(--white);
-            overflow-x: hidden;
-        }
-
+        body { font-family: 'Lato', sans-serif; color: var(--dark-text); background-color: var(--white); overflow-x: hidden; }
         h1, h2, h3 { font-family: 'Playfair Display', serif; }
-
-        /* --- Preloader --- */
-        #preloader {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--white);
-            z-index: 9999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            transition: opacity 0.5s ease;
-        }
-        .loader-flame {
-            font-size: 3rem;
-            color: var(--primary-red);
-            animation: flicker 1s infinite alternate;
-        }
-        @keyframes flicker {
-            0% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(1.2); opacity: 0.8; }
-        }
-
-        /* --- Header & Nav --- */
-        header {
-            padding: 1rem 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #eee;
-            position: sticky;
-            top: 0;
-            background: rgba(255,255,255,0.95);
-            z-index: 100;
-        }
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .logo-img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--primary-red);
-        }
-        .brand-name {
-            font-size: 1.5rem;
-            color: var(--primary-red);
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-
-        /* --- Carousel --- */
-        .carousel {
-            width: 100%;
-            height: 60vh;
-            position: relative;
-            overflow: hidden;
-            background: #000;
-        }
-        .slide {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            opacity: 0;
-            transition: opacity 1s ease-in-out;
-            background-size: cover;
-            background-position: center;
-        }
+        #preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--white); z-index: 9999; display: flex; justify-content: center; align-items: center; flex-direction: column; transition: opacity 0.5s ease; }
+        .loader-flame { font-size: 3rem; color: var(--primary-red); animation: flicker 1s infinite alternate; }
+        @keyframes flicker { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(1.2); opacity: 0.8; } }
+        header { padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; position: sticky; top: 0; background: rgba(255,255,255,0.95); z-index: 100; }
+        .logo-container { display: flex; align-items: center; gap: 10px; }
+        .brand-name { font-size: 1.5rem; color: var(--primary-red); font-weight: 700; letter-spacing: 1px; }
+        .carousel { width: 100%; height: 60vh; position: relative; overflow: hidden; background: #000; }
+        .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 1s ease-in-out; background-size: cover; background-position: center; }
         .slide.active { opacity: 0.6; }
-        .hero-text {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            color: var(--white);
-            width: 90%;
-            z-index: 2;
-        }
-        .hero-text h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
-
-        /* --- Size Guide Section --- */
-        .size-guide {
-            padding: 4rem 5%;
-            text-align: center;
-            background: var(--soft-red);
-        }
-        .size-grid {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            flex-wrap: wrap;
-            margin-top: 2rem;
-        }
-        .size-card {
-            background: var(--white);
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            min-width: 250px;
-            transition: var(--transition);
-        }
-        .size-card:hover { transform: translateY(-5px); }
-        .size-icon { font-size: 2rem; color: var(--primary-red); margin-bottom: 1rem; }
-        .size-price { font-size: 1.25rem; font-weight: 700; color: var(--dark-text); margin: 0.5rem 0; }
-
-        /* --- Products Section --- */
-        .products-section {
-            padding: 4rem 5%;
-        }
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-            color: var(--primary-red);
-        }
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 3rem;
-        }
-        .product-card {
-            background: var(--white);
-            border-radius: 12px;
-            overflow: hidden;
-            transition: var(--transition);
-            border: 1px solid #eee;
-        }
-        .product-card:hover { box-shadow: 0 10px 20px rgba(211, 47, 47, 0.15); }
-        .product-img {
-            width: 100%;
-            height: 300px;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-        .product-card:hover .product-img { transform: scale(1.05); }
+        .hero-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: var(--white); width: 90%; z-index: 2; }
+        .hero-text h1 { font-size: 3.5rem; margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .size-guide { padding: 4rem 5%; text-align: center; background: var(--soft-red); }
+        .size-grid { display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; margin-top: 2rem; }
+        .size-card { background: var(--white); padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); min-width: 250px; transition: var(--transition); }
+        .products-section { padding: 4rem 5%; }
+        .section-title { text-align: center; font-size: 2.5rem; margin-bottom: 3rem; color: var(--primary-red); }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 3rem; }
+        .product-card { background: var(--white); border-radius: 12px; overflow: hidden; border: 1px solid #eee; }
+        .product-img { width: 100%; height: 300px; object-fit: cover; }
         .product-info { padding: 1.5rem; text-align: center; }
-        .product-name { font-size: 1.5rem; margin-bottom: 0.5rem; }
-        .product-desc { color: var(--light-text); font-size: 0.9rem; margin-bottom: 1.5rem; }
-        
         .size-selector { display: flex; justify-content: center; gap: 10px; margin-bottom: 1.5rem; }
-        .size-btn {
-            border: 1px solid #ddd;
-            background: none;
-            padding: 5px 15px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        .size-btn.selected {
-            background: var(--primary-red);
-            color: var(--white);
-            border-color: var(--primary-red);
-        }
-        
-        .order-btn {
-            background: var(--dark-text);
-            color: var(--white);
-            border: none;
-            padding: 12px 30px;
-            font-size: 1rem;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: var(--transition);
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        .order-btn:hover { background: var(--primary-red); }
-
-        #toast {
-            visibility: hidden; min-width: 250px; background-color: #333; color: #fff;
-            text-align: center; border-radius: 4px; padding: 16px;
-            position: fixed; z-index: 1000; left: 50%; bottom: 30px;
-            transform: translateX(-50%); font-size: 17px;
-        }
+        .size-btn { border: 1px solid #ddd; padding: 5px 15px; border-radius: 20px; cursor: pointer; }
+        .size-btn.selected { background: var(--primary-red); color: var(--white); }
+        .order-btn { background: var(--dark-text); color: var(--white); padding: 12px 30px; border-radius: 30px; cursor: pointer; width: 100%; }
+        #toast { visibility: hidden; min-width: 250px; background-color: #333; color: #fff; text-align: center; border-radius: 4px; padding: 16px; position: fixed; z-index: 1000; left: 50%; bottom: 30px; transform: translateX(-50%); }
         #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
         @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
         @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
-
-        footer { background: var(--dark-text); color: var(--white); text-align: center; padding: 2rem; margin-top: 4rem; }
-
-        @media (max-width: 768px) {
-            .hero-text h1 { font-size: 2.5rem; }
-            .carousel { height: 50vh; }
-        }
     </style>
 </head>
 <body>
-
-    <div id="preloader">
-        <i class="fas fa-fire loader-flame"></i>
-        <h2 style="margin-top: 10px; color: var(--primary-red);">Zen Candles</h2>
-    </div>
-
-    <header>
-        <div class="logo-container">
-            <img src="https://instagram.fkhi5-1.fna.fbcdn.net/v/t51.2885-19/506304447_17851607490473195_6078570902996951729_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4zNDguYzIifQ&_nc_ht=instagram.fkhi5-1.fna.fbcdn.net&_nc_cat=111&_nc_oc=Q6cZ2QHtaKcrdaeyR8dsrGc8czXiCWa2Thpe1CQhp_eYtomAjYVpG-JeQaoFnjZL6Hj0yWQ&_nc_ohc=peTjb-2HZKwQ7kNvwE7SlfI&_nc_gid=5QXP4uw55AsoZdNQIMt-kA&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_AfruB1V1XnrW6oMeamMnG3etnWlm5PDsdbtJVYCfqmk8xg&oe=6974D232&_nc_sid=8b3546" alt="Zen Logo" class="logo-img">
-            <span class="brand-name">Zen Candles</span>
-        </div>
-        <a href="https://instagram.com/zen.candle" target="_blank" style="color:var(--dark-text); font-size:1.5rem;"><i class="fab fa-instagram"></i></a>
-    </header>
-
-    <div class="carousel" id="carousel">
-        <div class="hero-text">
-            <h1>Ignite Your Senses</h1>
-            <p>Hand-poured luxury for your space.</p>
-        </div>
-    </div>
-
-    <section class="size-guide">
-        <h2>Our Classic Candle Series</h2>
-        <div class="size-grid" id="size-grid"></div>
-    </section>
-
-    <section class="products-section">
-        <h2 class="section-title">Curated Collection</h2>
-        <div class="product-grid" id="product-grid"></div>
-    </section>
-
-    <div id="toast">Order details copied! Redirecting...</div>
-
-    <footer>
-        <p>&copy; 2023 Zen Candles. All rights reserved.</p>
-    </footer>
+    <div id="preloader"><i class="fas fa-fire loader-flame"></i><h2 style="margin-top: 10px; color: var(--primary-red);">Zen Candles</h2></div>
+    <header><div class="logo-container"><span class="brand-name">Zen Candles</span></div><a href="https://instagram.com/zen.candle" target="_blank" style="color:var(--dark-text); font-size:1.5rem;"><i class="fab fa-instagram"></i></a></header>
+    <div class="carousel" id="carousel"><div class="hero-text"><h1>Ignite Your Senses</h1><p>Hand-poured luxury for your space.</p></div></div>
+    <section class="size-guide"><h2>Our Classic Series</h2><div class="size-grid" id="size-grid"></div></section>
+    <section class="products-section"><h2 class="section-title">Collection</h2><div class="product-grid" id="product-grid"></div></section>
+    <div id="toast">Order details copied!</div>
 
     <script>
-        // Updated to your correct Repo Name
-        const DB_ROOT_URL = 'https://raw.githubusercontent.com/codemdragon/zen-candles/main/db.json';
-        const DB_DATA_URL = 'https://raw.githubusercontent.com/codemdragon/zen-candles/main/data/db.json';
-        
-        let db = { sizes: [], products: [], carouselImages: [] };
         window.userSelections = {};
+        let db = { sizes: [], products: [], carouselImages: [] };
+        const DB_URL = 'https://raw.githubusercontent.com/codemdragon/zen-candles/main/data/db.json';
 
         async function loadData() {
             try {
-                // Try fetching from /data/ folder first, then root
-                let res = await fetch(DB_DATA_URL);
-                if (!res.ok) res = await fetch(DB_ROOT_URL);
-                
+                const res = await fetch(DB_URL);
+                if (!res.ok) throw new Error("Fetch failed");
                 db = await res.json();
                 initApp();
-            } catch (error) {
-                console.error("Error loading data:", error);
-                // Fail-safe to remove preloader if GitHub is down
-                document.getElementById('preloader').remove();
-            }
+            } catch (error) { console.error(error); hidePreloader(); }
+        }
+
+        function hidePreloader() {
+            const preloader = document.getElementById('preloader');
+            if(preloader) { preloader.style.opacity = '0'; setTimeout(() => preloader.remove(), 500); }
         }
 
         function initApp() {
-            renderCarousel();
-            renderSizes();
-            renderProducts();
-            
-            setTimeout(() => {
-                const preloader = document.getElementById('preloader');
-                preloader.style.opacity = '0';
-                setTimeout(() => preloader.remove(), 500);
-            }, 1000);
+            renderCarousel(); renderSizes(); renderProducts(); hidePreloader();
         }
 
         function renderCarousel() {
             const container = document.getElementById('carousel');
-            if(!db.carouselImages) return;
-            const slidesHTML = db.carouselImages.map((url, index) => `
-                <div class="slide ${index === 0 ? 'active' : ''}" style="background-image: url('${url}')"></div>
-            `).join('');
+            const slidesHTML = db.carouselImages.map((url, index) => `<div class="slide ${index === 0 ? 'active' : ''}" style="background-image: url('${url}')"></div>`).join('');
             container.insertAdjacentHTML('afterbegin', slidesHTML);
-
-            let current = 0;
-            const slides = document.querySelectorAll('.slide');
-            if(slides.length > 0) {
-                setInterval(() => {
-                    slides[current].classList.remove('active');
-                    current = (current + 1) % slides.length;
-                    slides[current].classList.add('active');
-                }, 4000);
-            }
+            let current = 0; const slides = document.querySelectorAll('.slide');
+            if(slides.length > 0) setInterval(() => { slides[current].classList.remove('active'); current = (current + 1) % slides.length; slides[current].classList.add('active'); }, 4000);
         }
 
         function renderSizes() {
-            const grid = document.getElementById('size-grid');
-            if(!db.sizes) return;
-            grid.innerHTML = db.sizes.map(size => `
-                <div class="size-card">
-                    <div class="size-icon"><i class="fas fa-candle-holder"></i></div>
-                    <h3>${size.label}</h3>
-                    <div class="size-price">Rs. ${size.price}/-</div>
-                    <p>${size.desc || ''}</p>
-                </div>
-            `).join('');
+            document.getElementById('size-grid').innerHTML = db.sizes.map(size => `<div class="size-card"><h3>${size.label}</h3><div class="size-price">Rs. ${size.price}/-</div><p>${size.desc}</p></div>`).join('');
         }
 
         function renderProducts() {
-            const grid = document.getElementById('product-grid');
-            if(!db.products) return;
-            grid.innerHTML = db.products.map(product => {
-                // Default selection to first size
+            document.getElementById('product-grid').innerHTML = db.products.map(product => {
                 window.userSelections[product.id] = { label: db.sizes[0].label, price: db.sizes[0].price };
-
-                return `
-                    <div class="product-card">
-                        <div style="overflow:hidden;"><img src="${product.imageUrl}" class="product-img"></div>
-                        <div class="product-info">
-                            <h3 class="product-name">${product.name}</h3>
-                            <p class="product-desc">${product.description}</p>
-                            <div class="size-selector" id="selector-${product.id}">
-                                ${db.sizes.map((size, idx) => `
-                                    <button class="size-btn ${idx === 0 ? 'selected' : ''}" 
-                                            onclick="selectSize('${product.id}', '${size.label}', ${size.price}, this)">
-                                        ${size.label}
-                                    </button>
-                                `).join('')}
-                            </div>
-                            <button class="order-btn" onclick="orderProduct('${product.id}', '${product.name}')">
-                                <i class="fab fa-instagram"></i> Order via DM
-                            </button>
+                return `<div class="product-card">
+                    <img src="${product.imageUrl}" class="product-img">
+                    <div class="product-info">
+                        <h3>${product.name}</h3><p>${product.description}</p>
+                        <div class="size-selector" id="selector-${product.id}">
+                            ${db.sizes.map((size, idx) => `<button class="size-btn ${idx === 0 ? 'selected' : ''}" onclick="selectSize('${product.id}', '${size.label}', ${size.price}, this)">${size.label}</button>`).join('')}
                         </div>
+                        <button class="order-btn" onclick="orderProduct('${product.id}', '${product.name}')">Order via DM</button>
                     </div>
-                `;
+                </div>`;
             }).join('');
         }
 
         window.selectSize = function(productId, sizeLabel, price, btnElement) {
-            const container = document.getElementById(`selector-${productId}`);
-            const buttons = container.getElementsByClassName('size-btn');
+            const buttons = document.getElementById(`selector-${productId}`).getElementsByClassName('size-btn');
             for(let btn of buttons) btn.classList.remove('selected');
             btnElement.classList.add('selected');
             window.userSelections[productId] = { label: sizeLabel, price: price };
@@ -368,16 +110,14 @@
         window.orderProduct = function(productId, productName) {
             const selection = window.userSelections[productId];
             const text = `Hi! I'd like to order:\n\n🕯️ *${productName}* (${selection.label})\n💰 Rs. ${selection.price}\n\nPlease confirm availability.`;
-            
             navigator.clipboard.writeText(text).then(() => {
-                const toast = document.getElementById("toast");
-                toast.className = "show";
-                setTimeout(() => toast.className = "", 3000);
-                setTimeout(() => window.location.href = "https://instagram.com/zen.candle", 1000);
+                document.getElementById("toast").className = "show";
+                setTimeout(() => { document.getElementById("toast").className = ""; window.location.href = "https://instagram.com/zen.candle"; }, 2000);
             });
         }
-
+        
         loadData();
+        setTimeout(hidePreloader, 5000); // Fail-safe
     </script>
 </body>
 </html>
