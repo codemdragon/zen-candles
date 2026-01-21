@@ -79,7 +79,26 @@
             box-shadow: 0 4px 20px rgba(0,0,0,0.03);
             border-bottom: 1px solid var(--border-light);
         }
-        .logo { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 700; color: var(--text-main); letter-spacing: 1px; }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: 1px;
+        }
+        .logo-img {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        }
+        .logo-text {
+            white-space: nowrap;
+        }
         .social-link { font-size: 1.4rem; color: var(--text-main); }
         .social-link:hover { color: var(--primary); transform: translateY(-2px); }
 
@@ -111,7 +130,10 @@
         }
         .hero-text h1 {
             font-size: 4rem; margin-bottom: 1rem; font-weight: 400;
-            text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            color: #E07A5F; /* soft warm red */
+            text-shadow: 
+                0 4px 10px rgba(0,0,0,0.35),
+                0 0 25px rgba(224, 122, 95, 0.25);
             opacity: 0; transform: translateY(30px); animation: heroUp 1s ease forwards 0.5s;
         }
         .hero-text p {
@@ -297,7 +319,10 @@
 
     <!-- HEADER -->
     <header id="main-header">
-        <a href="#" class="logo">Zen Candles</a>
+        <a href="#" class="logo">
+            <img src="Zen-Logo.jpg" alt="Zen Candles Logo" class="logo-img">
+            <span class="logo-text">Zen Candles</span>
+        </a>
         <a href="https://instagram.com/zen.candle_" target="_blank" class="social-link" aria-label="Instagram">
             <i class="fab fa-instagram"></i>
         </a>
