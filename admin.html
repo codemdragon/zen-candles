@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zen Admin Panel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #D32F2F;
+            --bg: #f5f5f5;
+            --white: #fff;
+            --border: #ddd;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: #333; padding-bottom: 50px; }
+        
+        .navbar { background: var(--white); padding: 1rem 2rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .navbar h2 { color: var(--primary); }
+        
+        .container { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
+        
+        .card { background: var(--white); padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 1.5rem; }
+        .card h3 { margin-bottom: 1rem; border-bottom: 2px solid var(--primary); display: inline-block; padding-bottom: 5px; }
+
+        .input-group { margin-bottom: 1rem; }
+        .input-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.9rem; }
+        .input-group input, .input-group textarea { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 4px; }
+        .row { display: flex; gap: 1rem; }
+        .row .input-group { flex: 1; }
+
+        button { padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; }
+        .btn-primary { background: var(--primary); color: white; width: 100%; margin-top: 10px; }
+        .btn-sm { padding: 5px 10px; font-size: 0.8rem; margin-right: 5px; }
+        .btn-del { background: #e53935; color: white; }
+        .btn-add { background: #43a047; color: white; margin-bottom: 1rem; }
+
+        #login-screen { position: fixed; top:0; left:0; width:100%; height:100%; background: var(--bg); z-index: 999; display: flex; justify-content: center; align-items: center; }
+        .login-box { background: white; padding: 2rem; border-radius: 8px; width: 90%; max-width: 400px; text-align: center; }
+        
+        .item-list { list-style: none; }
+        .item-list li { background: #f9f9f9; border: 1px solid var(--border); padding: 10px; margin-bottom: 5px; display: flex; justify-content: space-between; align-items: center; }
+        
+        .status { margin-top: 10px; padding: 10px; border-radius: 4px; display: none; }
+        .status.success { background: #e8f5e9; color: #2e7d32; display: block; }
+        .status.error { background: #ffebee; color: #c62828; display: block; }
+
+        /* Mobile Responsive */
+        @media (max-width: 600px) {
+            .row { flex-direction: column; gap: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Login Screen -->
+    <div id="login-screen">
+        <div class="login-box">
+            <h2>Zen Admin</h2>
+            <p style="margin-bottom: 1rem; color: #666;">Enter GitHub Token to Edit</p>
+            <div class="input-group">
+                <input type="password" id="gh-token" placeholder="ghp_xxxxxxxxxxxx">
+            </div>
+            <button class="btn-primary" onclick="login()">Access Panel</button>
+            <p style="margin-top:1rem; font-size:0.8rem; color:#999;">Token is saved locally in your browser.</p>
+        </div>
+    </div>
+
+    <!-- Main App (Hidden initially) -->
+    <div id="admin-app" style="display:none;">
+        <div class="navbar">
+            <h2>Zen Candles Manager</h2>
+            <button onclick="logout()" style="background:transparent; color: var(--primary); border: 1px solid var(--primary);">Logout</button>
+        </div>
+
+        <div class="container">
+            <div class="card">
+                <h3>Settings</h3>
+                <div class="input-group">
+                    <label>Repo Owner</label>
+                    <input type="text" id="repo-owner" value="codemdragon">
+                </div>
+                <div class="input-group">
+                    <label>Repo Name</label>
+                    <input type="text" id="repo-name" value="zen-candles-repo">
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Carousel Images</h3>
+                <ul class="item-list" id="carousel-list"></ul>
+                <div class="row">
+                    <input type="text" id="new-carousel-img" placeholder="Image URL">
+                    <button class="btn-sm btn-add" onclick="addCarousel()">Add</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Products</h3>
+                <ul class="item-list" id="product-list"></ul>
+                <hr style="margin: 1rem 0; border: 0; border-top: 1px solid #eee;">
+                <h4>Add New Product</h4>
+                <div class="row">
+                    <div class="input-group">
+                        <label>Name</label>
+                        <input type="text" id="new-name">
+                    </div>
+                    <div class="input-group">
+                        <label>ID</label>
+                        <input type="text" id="new-id">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Description</label>
+                    <textarea id="new-desc" rows="2"></textarea>
+                </div>
+                <div class="input-group">
+                    <label>Image URL</label>
+                    <input type="text" id="new-img">
+                </div>
+                <button class="btn-primary" onclick="addProduct()">Add Product</button>
+            </div>
+
+            <div class="card">
+                <h3>Save Changes</h3>
+                <p style="margin-bottom:10px; font-size:0.9rem;">Clicking this will update the <code>data/db.json</code> file in GitHub.</p>
+                <button class="btn-primary" onclick="saveToGitHub()" style="background: #2e7d32;">Push to GitHub</button>
+                <div id="save-status" class="status"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Logic ---
+        // GitHub API URL parts
+        let API_URL = '';
+        let CURRENT_SHA = ''; // Needed to update file
+        let token = localStorage.getItem('zen_gh_token');
+
+        // Initial Data Structure (Template)
+        let db = {
+            carouselImages: [],
+            products: [],
+            sizes: [] // We keep sizes static for simplicity in this admin demo, or you could add edit logic
+        };
+
+        // Check login on load
+        if(token) {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('admin-app').style.display = 'block';
+            loadDb();
+        }
+
+        function login() {
+            const inputToken = document.getElementById('gh-token').value;
+            if(inputToken.startsWith('ghp_') || inputToken.startsWith('github_pat_')) {
+                localStorage.setItem('zen_gh_token', inputToken);
+                token = inputToken;
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('admin-app').style.display = 'block';
+                loadDb();
+            } else {
+                alert('Invalid Token format');
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('zen_gh_token');
+            location.reload();
+        }
+
+        async function loadDb() {
+            const owner = document.getElementById('repo-owner').value;
+            const repo = document.getElementById('repo-name').value;
+            const path = 'data/db.json';
+            API_URL = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+
+            try {
+                const res = await fetch(API_URL, {
+                    headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
+                });
+                
+                if(!res.ok) throw new Error('Failed to fetch DB');
+                
+                const data = await res.json();
+                CURRENT_SHA = data.sha;
+                db = JSON.parse(atob(data.content)); // Decode Base64
+                
+                renderLists();
+            } catch (err) {
+                alert("Error loading data: " + err.message + "\nMake sure repo is public and token is valid.");
+            }
+        }
+
+        function renderLists() {
+            // Carousel
+            const cList = document.getElementById('carousel-list');
+            cList.innerHTML = db.carouselImages.map((url, i) => `
+                <li>
+                    <span style="font-size:0.8rem; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; max-width:70%; display:inline-block;">${url}</span>
+                    <button class="btn-sm btn-del" onclick="removeItem('carousel', ${i})">Del</button>
+                </li>
+            `).join('');
+
+            // Products
+            const pList = document.getElementById('product-list');
+            pList.innerHTML = db.products.map((p, i) => `
+                <li>
+                    <strong>${p.name}</strong>
+                    <button class="btn-sm btn-del" onclick="removeItem('product', ${i})">Del</button>
+                </li>
+            `).join('');
+        }
+
+        function addCarousel() {
+            const val = document.getElementById('new-carousel-img').value;
+            if(val) { db.carouselImages.push(val); renderLists(); document.getElementById('new-carousel-img').value=''; }
+        }
+
+        function addProduct() {
+            const name = document.getElementById('new-name').value;
+            const id = document.getElementById('new-id').value;
+            const desc = document.getElementById('new-desc').value;
+            const img = document.getElementById('new-img').value;
+
+            if(name && id) {
+                db.products.push({ id, name, description: desc, imageUrl: img });
+                renderLists();
+                // Clear fields
+                document.getElementById('new-name').value = '';
+                document.getElementById('new-id').value = '';
+                document.getElementById('new-desc').value = '';
+                document.getElementById('new-img').value = '';
+            }
+        }
+
+        function removeItem(type, index) {
+            if(confirm('Are you sure?')) {
+                if(type === 'carousel') db.carouselImages.splice(index, 1);
+                if(type === 'product') db.products.splice(index, 1);
+                renderLists();
+            }
+        }
+
+        async function saveToGitHub() {
+            const status = document.getElementById('save-status');
+            status.className = 'status';
+            status.textContent = 'Saving...';
+            
+            const contentBase64 = btoa(JSON.stringify(db, null, 2)); // Encode to Base64
+            
+            const body = {
+                message: "Update DB via Admin Panel",
+                content: contentBase64,
+                sha: CURRENT_SHA
+            };
+
+            try {
+                const res = await fetch(API_URL, {
+                    method: 'PUT',
+                    headers: { 
+                        'Authorization': `token ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(body)
+                });
+
+                if(!res.ok) throw new Error('Update Failed');
+
+                const data = await res.json();
+                CURRENT_SHA = data.content.sha; // Update SHA for next save
+                status.textContent = 'Saved successfully! Website will update shortly.';
+                status.classList.add('success');
+            } catch (err) {
+                status.textContent = 'Error: ' + err.message;
+                status.classList.add('error');
+            }
+        }
+    </script>
+</body>
+</html>
