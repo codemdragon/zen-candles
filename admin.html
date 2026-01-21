@@ -118,6 +118,7 @@
         let CURRENT_SHA = '';
         let token = localStorage.getItem('zen_gh_token');
         let db = { carouselImages: [], products: [], sizes: [] };
+        let editingProductIndex = null;
 
         if(token) {
             document.getElementById('login-screen').style.display = 'none';
@@ -155,7 +156,13 @@
                 <li><span style="font-size:0.7rem;">${url}</span><button class="btn-sm btn-del" onclick="removeItem('carousel', ${i})">Del</button></li>
             `).join('');
             document.getElementById('product-list').innerHTML = db.products.map((p, i) => `
-                <li><strong>${p.name}</strong><button class="btn-sm btn-del" onclick="removeItem('product', ${i})">Del</button></li>
+                <li>
+                    <strong>${p.name}</strong>
+                    <div>
+                        <button class="btn-sm" onclick="editProduct(${i})">Edit</button>
+                        <button class="btn-sm btn-del" onclick="removeItem('product', ${i})">Del</button>
+                    </div>
+                </li>
             `).join('');
         }
 
@@ -198,23 +205,67 @@
             finally { btn.disabled = false; btn.innerText = "Add to Carousel"; }
         }
 
+        function editProduct(index) {
+            const p = db.products[index];
+            editingProductIndex = index;
+            document.getElementById('new-id').value = p.id;
+            document.getElementById('new-id').disabled = true;
+            document.getElementById('new-name').value = p.name;
+            document.getElementById('new-desc').value = p.description;
+            document.getElementById('new-img').value = p.imageUrl;
+            document.getElementById('btn-add-product').innerText = "Save Changes";
+        }
+
         async function addProduct() {
             const btn = document.getElementById('btn-add-product');
             const fileInput = document.getElementById('new-img-file');
+
             const id = document.getElementById('new-id').value;
             const name = document.getElementById('new-name').value;
+            const desc = document.getElementById('new-desc').value;
             let url = document.getElementById('new-img').value;
+
             if(!id || !name) return alert("ID and Name required");
+
+            if (editingProductIndex !== null) {
+                const proceed = confirm("Save changes to this product?");
+                if (!proceed) { resetProductForm(); return; }
+            }
+
             try {
-                btn.disabled = true; btn.innerText = "Uploading Image...";
+                btn.disabled = true;
+                btn.innerText = "Saving...";
+
                 const uploadedUrl = await uploadImage(fileInput, `prod-${id}`);
                 if(uploadedUrl) url = uploadedUrl;
-                db.products.push({ id, name, description: document.getElementById('new-desc').value, imageUrl: url });
+
+                const productData = { id, name, description: desc, imageUrl: url };
+
+                if (editingProductIndex !== null) {
+                    db.products[editingProductIndex] = productData;
+                    editingProductIndex = null;
+                } else {
+                    db.products.push(productData);
+                }
+
                 renderLists();
-                ['new-name', 'new-id', 'new-desc', 'new-img'].forEach(i => document.getElementById(i).value = '');
-                fileInput.value = '';
-            } catch(e) { alert(e.message); }
-            finally { btn.disabled = false; btn.innerText = "Create Product"; }
+                resetProductForm();
+
+            } catch(e) {
+                alert(e.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "Create Product";
+            }
+        }
+
+        function resetProductForm() {
+            ['new-name', 'new-id', 'new-desc', 'new-img'].forEach(id => {
+                document.getElementById(id).value = '';
+            });
+            document.getElementById('new-id').disabled = false;
+            document.getElementById('new-img-file').value = '';
+            document.getElementById('btn-add-product').innerText = "Create Product";
         }
 
         function removeItem(type, index) {
