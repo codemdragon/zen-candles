@@ -82,9 +82,10 @@
                     </div>
                     <div class="input-group">
                         <label>Repo Name</label>
-                        <input type="text" id="repo-name" value="zen-candles-repo">
+                        <input type="text" id="repo-name" value="zen-candles">
                     </div>
                 </div>
+                <button class="btn-sm" onclick="loadDb()" style="margin-top:5px; background:#333; color:white;">Reload DB Connection</button>
             </div>
 
             <div class="card">
@@ -142,12 +143,14 @@
 
         if(token) {
             document.getElementById('login-screen').style.display = 'none';
+            // We allow the UI to show immediately so you can edit settings if load fails
             document.getElementById('admin-app').style.display = 'block';
             loadDb();
         }
 
         function login() {
             const inputToken = document.getElementById('gh-token').value;
+            // Basic validation for classic or fine-grained tokens
             if(inputToken.startsWith('ghp_') || inputToken.startsWith('github_pat_')) {
                 localStorage.setItem('zen_gh_token', inputToken);
                 token = inputToken;
@@ -169,19 +172,25 @@
                 const res = await fetch(API_URL, {
                     headers: { 'Authorization': `token ${token}` }
                 });
+                
+                if(!res.ok) throw new Error("Repo not found or Token invalid");
+
                 const data = await res.json();
                 CURRENT_SHA = data.sha;
                 db = JSON.parse(atob(data.content));
                 renderLists();
-            } catch (err) { alert("Load failed. Check repo settings/token."); }
+            } catch (err) { 
+                console.error(err);
+                alert("Connection failed! Please check the Owner and Repo Name in 'Repo Settings' above."); 
+            }
         }
 
         function renderLists() {
-            document.getElementById('carousel-list').innerHTML = db.carouselImages.map((url, i) => `
+            document.getElementById('carousel-list').innerHTML = (db.carouselImages || []).map((url, i) => `
                 <li><span style="font-size:0.7rem;">${url}</span><button class="btn-sm btn-del" onclick="removeItem('carousel', ${i})">Del</button></li>
             `).join('');
 
-            document.getElementById('product-list').innerHTML = db.products.map((p, i) => `
+            document.getElementById('product-list').innerHTML = (db.products || []).map((p, i) => `
                 <li><strong>${p.name}</strong><button class="btn-sm btn-del" onclick="removeItem('product', ${i})">Del</button></li>
             `).join('');
         }
@@ -227,6 +236,7 @@
                 if(uploadedUrl) url = uploadedUrl;
 
                 if(url) {
+                    if(!db.carouselImages) db.carouselImages = [];
                     db.carouselImages.push(url);
                     renderLists();
                     document.getElementById('new-carousel-img').value = '';
@@ -251,6 +261,7 @@
                 const uploadedUrl = await uploadImage(fileInput, `prod-${id}`);
                 if(uploadedUrl) url = uploadedUrl;
 
+                if(!db.products) db.products = [];
                 db.products.push({ 
                     id, name, 
                     description: document.getElementById('new-desc').value, 
