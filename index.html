@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zen Candles | Premium Scents</title>
-    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
-    <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
@@ -174,7 +172,6 @@
         .product-name { font-size: 1.5rem; margin-bottom: 0.5rem; }
         .product-desc { color: var(--light-text); font-size: 0.9rem; margin-bottom: 1.5rem; }
         
-        /* Size Selector in Product */
         .size-selector { display: flex; justify-content: center; gap: 10px; margin-bottom: 1.5rem; }
         .size-btn {
             border: 1px solid #ddd;
@@ -207,34 +204,17 @@
         }
         .order-btn:hover { background: var(--primary-red); }
 
-        /* --- Toast Notification --- */
         #toast {
-            visibility: hidden;
-            min-width: 250px;
-            background-color: #333;
-            color: #fff;
-            text-align: center;
-            border-radius: 4px;
-            padding: 16px;
-            position: fixed;
-            z-index: 1000;
-            left: 50%;
-            bottom: 30px;
-            transform: translateX(-50%);
-            font-size: 17px;
+            visibility: hidden; min-width: 250px; background-color: #333; color: #fff;
+            text-align: center; border-radius: 4px; padding: 16px;
+            position: fixed; z-index: 1000; left: 50%; bottom: 30px;
+            transform: translateX(-50%); font-size: 17px;
         }
         #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
         @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
         @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
 
-        /* --- Footer --- */
-        footer {
-            background: var(--dark-text);
-            color: var(--white);
-            text-align: center;
-            padding: 2rem;
-            margin-top: 4rem;
-        }
+        footer { background: var(--dark-text); color: var(--white); text-align: center; padding: 2rem; margin-top: 4rem; }
 
         @media (max-width: 768px) {
             .hero-text h1 { font-size: 2.5rem; }
@@ -244,13 +224,11 @@
 </head>
 <body>
 
-    <!-- Preloader -->
     <div id="preloader">
         <i class="fas fa-fire loader-flame"></i>
         <h2 style="margin-top: 10px; color: var(--primary-red);">Zen Candles</h2>
     </div>
 
-    <!-- Header -->
     <header>
         <div class="logo-container">
             <img src="https://instagram.fkhi5-1.fna.fbcdn.net/v/t51.2885-19/506304447_17851607490473195_6078570902996951729_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4zNDguYzIifQ&_nc_ht=instagram.fkhi5-1.fna.fbcdn.net&_nc_cat=111&_nc_oc=Q6cZ2QHtaKcrdaeyR8dsrGc8czXiCWa2Thpe1CQhp_eYtomAjYVpG-JeQaoFnjZL6Hj0yWQ&_nc_ohc=peTjb-2HZKwQ7kNvwE7SlfI&_nc_gid=5QXP4uw55AsoZdNQIMt-kA&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_AfruB1V1XnrW6oMeamMnG3etnWlm5PDsdbtJVYCfqmk8xg&oe=6974D232&_nc_sid=8b3546" alt="Zen Logo" class="logo-img">
@@ -259,59 +237,49 @@
         <a href="https://instagram.com/zen.candle" target="_blank" style="color:var(--dark-text); font-size:1.5rem;"><i class="fab fa-instagram"></i></a>
     </header>
 
-    <!-- Carousel -->
     <div class="carousel" id="carousel">
-        <!-- Slides injected via JS -->
         <div class="hero-text">
             <h1>Ignite Your Senses</h1>
             <p>Hand-poured luxury for your space.</p>
         </div>
     </div>
 
-    <!-- Size Info -->
     <section class="size-guide">
         <h2>Our Classic Candle Series</h2>
-        <p style="margin-top: 10px;">From a quick touch of ambiance to a long-lasting centerpiece.</p>
-        <div class="size-grid" id="size-grid">
-            <!-- Injected via JS -->
-        </div>
+        <div class="size-grid" id="size-grid"></div>
     </section>
 
-    <!-- Products -->
     <section class="products-section">
         <h2 class="section-title">Curated Collection</h2>
-        <div class="product-grid" id="product-grid">
-            <!-- Products injected via JS -->
-        </div>
+        <div class="product-grid" id="product-grid"></div>
     </section>
 
-    <!-- Toast -->
     <div id="toast">Order details copied! Redirecting...</div>
 
     <footer>
         <p>&copy; 2023 Zen Candles. All rights reserved.</p>
-        <p style="font-size: 0.8rem; margin-top: 10px;">Designed with ❤️</p>
     </footer>
 
     <script>
-        // --- Configuration ---
-        // We use raw.githubusercontent to fetch the JSON data publicly
-        const DB_URL = 'https://raw.githubusercontent.com/codemdragon/zen-candles-repo/main/data/db.json';
+        // Updated to your correct Repo Name
+        const DB_ROOT_URL = 'https://raw.githubusercontent.com/codemdragon/zen-candles/main/db.json';
+        const DB_DATA_URL = 'https://raw.githubusercontent.com/codemdragon/zen-candles/main/data/db.json';
         
-        // --- State ---
-        let db = { sizes: [], products: [] };
-
-        // --- Functions ---
+        let db = { sizes: [], products: [], carouselImages: [] };
+        window.userSelections = {};
 
         async function loadData() {
             try {
-                const res = await fetch(DB_URL);
+                // Try fetching from /data/ folder first, then root
+                let res = await fetch(DB_DATA_URL);
+                if (!res.ok) res = await fetch(DB_ROOT_URL);
+                
                 db = await res.json();
                 initApp();
             } catch (error) {
                 console.error("Error loading data:", error);
-                // Fallback for if the user is just testing the file locally without the repo setup yet
-                // We won't crash, just won't show products
+                // Fail-safe to remove preloader if GitHub is down
+                document.getElementById('preloader').remove();
             }
         }
 
@@ -320,25 +288,21 @@
             renderSizes();
             renderProducts();
             
-            // Remove preloader
             setTimeout(() => {
                 const preloader = document.getElementById('preloader');
                 preloader.style.opacity = '0';
                 setTimeout(() => preloader.remove(), 500);
-            }, 1500);
+            }, 1000);
         }
 
         function renderCarousel() {
             const container = document.getElementById('carousel');
-            // Keep the hero text, clear slides (if any added previously) or insert before text
+            if(!db.carouselImages) return;
             const slidesHTML = db.carouselImages.map((url, index) => `
                 <div class="slide ${index === 0 ? 'active' : ''}" style="background-image: url('${url}')"></div>
             `).join('');
-            
-            // Insert slides at the beginning
             container.insertAdjacentHTML('afterbegin', slidesHTML);
 
-            // Simple Auto Scroll
             let current = 0;
             const slides = document.querySelectorAll('.slide');
             if(slides.length > 0) {
@@ -352,81 +316,67 @@
 
         function renderSizes() {
             const grid = document.getElementById('size-grid');
+            if(!db.sizes) return;
             grid.innerHTML = db.sizes.map(size => `
                 <div class="size-card">
                     <div class="size-icon"><i class="fas fa-candle-holder"></i></div>
                     <h3>${size.label}</h3>
                     <div class="size-price">Rs. ${size.price}/-</div>
-                    <p>${size.desc}</p>
+                    <p>${size.desc || ''}</p>
                 </div>
             `).join('');
         }
 
         function renderProducts() {
             const grid = document.getElementById('product-grid');
-            grid.innerHTML = db.products.map(product => `
-                <div class="product-card">
-                    <div style="overflow:hidden;">
-                        <img src="${product.imageUrl}" alt="${product.name}" class="product-img">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">${product.name}</h3>
-                        <p class="product-desc">${product.description}</p>
-                        
-                        <div class="size-selector" id="selector-${product.id}">
-                            ${db.sizes.map((size, idx) => `
-                                <button class="size-btn ${idx === 0 ? 'selected' : ''}" 
-                                        onclick="selectSize('${product.id}', '${size.label}', ${size.price}, this)">
-                                    ${size.label}
-                                </button>
-                            `).join('')}
-                        </div>
+            if(!db.products) return;
+            grid.innerHTML = db.products.map(product => {
+                // Default selection to first size
+                window.userSelections[product.id] = { label: db.sizes[0].label, price: db.sizes[0].price };
 
-                        <button class="order-btn" onclick="orderProduct('${product.name}')">
-                            <i class="fab fa-instagram"></i> Order via DM
-                        </button>
+                return `
+                    <div class="product-card">
+                        <div style="overflow:hidden;"><img src="${product.imageUrl}" class="product-img"></div>
+                        <div class="product-info">
+                            <h3 class="product-name">${product.name}</h3>
+                            <p class="product-desc">${product.description}</p>
+                            <div class="size-selector" id="selector-${product.id}">
+                                ${db.sizes.map((size, idx) => `
+                                    <button class="size-btn ${idx === 0 ? 'selected' : ''}" 
+                                            onclick="selectSize('${product.id}', '${size.label}', ${size.price}, this)">
+                                        ${size.label}
+                                    </button>
+                                `).join('')}
+                            </div>
+                            <button class="order-btn" onclick="orderProduct('${product.id}', '${product.name}')">
+                                <i class="fab fa-instagram"></i> Order via DM
+                            </button>
+                        </div>
                     </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
-        // Store selection temporarily
-        window.userSelections = {};
-
         window.selectSize = function(productId, sizeLabel, price, btnElement) {
-            // Update UI
             const container = document.getElementById(`selector-${productId}`);
             const buttons = container.getElementsByClassName('size-btn');
             for(let btn of buttons) btn.classList.remove('selected');
             btnElement.classList.add('selected');
-
-            // Save selection
             window.userSelections[productId] = { label: sizeLabel, price: price };
         }
 
-        window.orderProduct = function(productName) {
-            const selection = window.userSelections[productName] || window.userSelections[Object.keys(window.userSelections)[0]]; // Fallback
-            
-            if(!selection) {
-                // Default to first size if nothing selected
-                selection = { label: db.sizes[0].label, price: db.sizes[0].price };
-            }
-
+        window.orderProduct = function(productId, productName) {
+            const selection = window.userSelections[productId];
             const text = `Hi! I'd like to order:\n\n🕯️ *${productName}* (${selection.label})\n💰 Rs. ${selection.price}\n\nPlease confirm availability.`;
             
             navigator.clipboard.writeText(text).then(() => {
                 const toast = document.getElementById("toast");
                 toast.className = "show";
-                setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
-                
-                // Redirect after a slight delay to allow copy
-                setTimeout(() => {
-                    window.location.href = "https://instagram.com/zen.candle";
-                }, 1000);
+                setTimeout(() => toast.className = "", 3000);
+                setTimeout(() => window.location.href = "https://instagram.com/zen.candle", 1000);
             });
         }
 
-        // Initialize
         loadData();
     </script>
 </body>
