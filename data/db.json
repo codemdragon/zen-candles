@@ -1,0 +1,38 @@
+{
+  "carouselImages": [
+    "https://images.unsplash.com/photo-1602607453931-4c70f8053f54?q=80&w=2070&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1602874801007-bd458bb1b8b6?q=80&w=2069&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1543466835-00a7907e9de1?q=80&w=1974&auto=format&fit=crop"
+  ],
+  "products": [
+    {
+      "id": "hurrem",
+      "name": "Hürrem Sultan",
+      "description": "A scent of royalty. Rose petals that evoke the private, intimate atmosphere of the Ottoman court.",
+      "imageUrl": "https://images.unsplash.com/photo-1603006905003-be475563bc59?q=80&w=1887&auto=format&fit=crop"
+    },
+    {
+      "id": "grandma",
+      "name": "Grandma's Oven",
+      "description": "Sweet baked apples and warm cinnamon. A candle filled with love and nostalgic warmth.",
+      "imageUrl": "https://images.unsplash.com/photo-1596218173686-422d4951b76d?q=80&w=2070&auto=format&fit=crop"
+    },
+    {
+      "id": "tranquil",
+      "name": "Tranquil Tropics",
+      "description": "A refreshing and sweetly balanced escape to a tropical paradise.",
+      "imageUrl": "https://images.unsplash.com/photo-1602404170209-4f6b805a0363?q=80&w=1935&auto=format&fit=crop"
+    },
+    {
+      "id": "barista",
+      "name": "Barista Bliss",
+      "description": "The rich aroma of roasted coffee beans, perfect for early mornings.",
+      "imageUrl": "https://images.unsplash.com/photo-1559599746-c0f31a577f54?q=80&w=1887&auto=format&fit=crop"
+    }
+  ],
+  "sizes": [
+    { "label": "60g", "price": 1500, "desc": "Your perfect little luxury." },
+    { "label": "120g", "price": 2400, "desc": "Our beloved bestseller." },
+    { "label": "220g", "price": 3600, "desc": "The grand ambiance maker." }
+  ]
+}
