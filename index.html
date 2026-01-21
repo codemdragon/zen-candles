@@ -40,6 +40,21 @@
         a { text-decoration: none; color: inherit; transition: var(--transition); }
         button { border: none; outline: none; cursor: pointer; font-family: inherit; }
 
+        /* === MOBILE TAP HIGHLIGHT & FOCUS TWEAKS === */
+        a,
+        button,
+        .logo,
+        .menu-nav a,
+        .size-btn,
+        .order-btn,
+        .social-link {
+            -webkit-tap-highlight-color: transparent;
+        }
+        a:focus-visible,
+        button:focus-visible {
+            outline: none;
+        }
+
         /* --- 2. PRELOADER --- */
         #preloader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -365,7 +380,7 @@
             .product-img-wrapper { height: 160px; } 
             .product-info { padding: 1rem 0.8rem; }
             .product-name { font-size: 1.1rem; margin-bottom: 0.3rem; min-height: 2.2rem; display: flex; align-items: center; justify-content: center; }
-            .product-desc { font-size: 0.8rem; margin-bottom: 1rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+            .product-desc { font-size: 0.8rem; margin-bottom: 1rem; display: -webkit-box; line-clamp: 2; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
             .size-selector { gap: 6px; margin-bottom: 1rem; }
             .size-btn { padding: 5px 10px; font-size: 0.7rem; }
             .order-btn { padding: 10px 12px; font-size: 0.8rem; width: 100%; }
