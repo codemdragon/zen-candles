@@ -8,26 +8,44 @@
     {
       "id": "hurrem",
       "name": "Hürrem Sultan",
-      "description": "A scent of royalty. Rose petals that evoke the private, intimate atmosphere of the Ottoman court.",
+      "description": "A royal decree of velvety rose and commanding oud, this candle embodies the quiet power of a monarch's private chamber, where luxury needs no proclamation.",
       "imageUrl": "https://images.unsplash.com/photo-1603006905003-be475563bc59?q=80&w=1887&auto=format&fit=crop"
     },
     {
       "id": "grandma",
       "name": "Grandma's Oven",
-      "description": "Sweet baked apples and warm cinnamon. A candle filled with love and nostalgic warmth.",
+      "description": "Grandma's oven at golden hour, crackling cinnamon, buttery crust, and the sweet sigh of baked apples, wrapped in the kind of love that never cools.",
       "imageUrl": "https://images.unsplash.com/photo-1596218173686-422d4951b76d?q=80&w=2070&auto=format&fit=crop"
     },
     {
       "id": "tranquil",
       "name": "Tranquil Tropics",
-      "description": "A refreshing and sweetly balanced escape to a tropical paradise.",
+      "description": "A refreshing and sweetly balanced candle with zesty lemongrass and juicy peach fragrance notes.",
       "imageUrl": "https://images.unsplash.com/photo-1602404170209-4f6b805a0363?q=80&w=1935&auto=format&fit=crop"
     },
     {
       "id": "barista",
       "name": "Barista Bliss",
-      "description": "The rich aroma of roasted coffee beans, perfect for early mornings.",
+      "description": "Warm and comforting, this candle blends rich espresso, creamy vanilla, and caramelized sweetness for the perfect coffeehouse vibe.",
       "imageUrl": "https://images.unsplash.com/photo-1559599746-c0f31a577f54?q=80&w=1887&auto=format&fit=crop"
+    },
+    {
+      "id": "Captain",
+      "name": "The Captain's Cabin",
+      "description": "Rich mahogany and deep teakwood intertwine in this bold, woody candle smoldering, sophisticated, and irresistibly masculine.",
+      "imageUrl": ""
+    },
+    {
+      "id": "Sanctuary",
+      "name": "Serene Sanctuary",
+      "description": "Infused with the serene essence of Thai spas, this candle blends zesty lemongrass and warming ginger for an invigorating, spa-like escape at home.",
+      "imageUrl": ""
+    },
+    {
+      "id": "Petal",
+      "name": "Petal Patisserie",
+      "description": "Velvety rose petals swirl with creamy vanilla in this candle, creating a dreamy, romantic escape soft, sweet, and utterly luxurious.",
+      "imageUrl": ""
     }
   ],
   "sizes": [
