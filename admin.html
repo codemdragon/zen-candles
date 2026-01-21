@@ -17,6 +17,8 @@
         .input-group { margin-bottom: 1rem; }
         .input-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.9rem; }
         .input-group input, .input-group textarea { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 4px; }
+        .product-info { display: flex; flex-direction: column; gap: 2px; }
+        .product-desc { font-size: 12px; color: #666; max-width: 260px; }
         .row { display: flex; gap: 1rem; }
         .row .input-group { flex: 1; }
         button { padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; transition: opacity 0.2s; }
@@ -101,6 +103,10 @@
                     <label>Product Image</label>
                     <input type="text" id="new-img" placeholder="Paste URL" style="margin-bottom:5px;">
                     <input type="file" id="new-img-file" accept="image/*">
+                    <img id="img-preview"
+                        src=""
+                        alt="Preview"
+                        style="display:none; width:120px; height:auto; margin-top:10px; border-radius:10px;">
                 </div>
                 <button class="btn-primary" id="btn-add-product" onclick="addProduct()">Create Product</button>
             </div>
@@ -119,6 +125,10 @@
         let token = localStorage.getItem('zen_gh_token');
         let db = { carouselImages: [], products: [], sizes: [] };
         let editingProductIndex = null;
+        
+        // 🛑 Unsaved changes protection
+        let isDirty = false;
+        let originalProductSnapshot = null;
 
         if(token) {
             document.getElementById('login-screen').style.display = 'none';
@@ -156,14 +166,22 @@
                 <li><span style="font-size:0.7rem;">${url}</span><button class="btn-sm btn-del" onclick="removeItem('carousel', ${i})">Del</button></li>
             `).join('');
             document.getElementById('product-list').innerHTML = db.products.map((p, i) => `
-                <li>
-                    <strong>${p.name}</strong>
+                <li class="product-row">
+                    <div class="product-info">
+                        <strong>${p.name}</strong>
+                        <span class="product-desc">${truncate(p.description, 50)}</span>
+                    </div>
                     <div>
                         <button class="btn-sm" onclick="editProduct(${i})">Edit</button>
                         <button class="btn-sm btn-del" onclick="removeItem('product', ${i})">Del</button>
                     </div>
                 </li>
             `).join('');
+        }
+
+        function truncate(text, max = 40) {
+            if (!text) return '';
+            return text.length > max ? text.slice(0, max) + '…' : text;
         }
 
         const toBase64 = file => new Promise((resolve, reject) => {
@@ -206,13 +224,33 @@
         }
 
         function editProduct(index) {
+            // 🛑 Protect against switching products with unsaved changes
+            if (isDirty && !confirm("You have unsaved changes. Discard them?")) {
+                return;
+            }
+
             const p = db.products[index];
             editingProductIndex = index;
+
+            // 🛑 Capture original state
+            originalProductSnapshot = JSON.stringify(p);
+            isDirty = false;
+
             document.getElementById('new-id').value = p.id;
             document.getElementById('new-id').disabled = true;
             document.getElementById('new-name').value = p.name;
             document.getElementById('new-desc').value = p.description;
             document.getElementById('new-img').value = p.imageUrl;
+
+            const preview = document.getElementById('img-preview');
+            if (p.imageUrl) {
+                preview.src = p.imageUrl;
+                preview.style.display = 'block';
+            } else {
+                preview.src = '';
+                preview.style.display = 'none';
+            }
+
             document.getElementById('btn-add-product').innerText = "Save Changes";
         }
 
@@ -249,7 +287,12 @@
                 }
 
                 renderLists();
-                resetProductForm();
+                
+                // 🛑 Reset dirty state after successful save
+                isDirty = false;
+                originalProductSnapshot = null;
+                
+                resetProductForm(true);
 
             } catch(e) {
                 alert(e.message);
@@ -259,14 +302,54 @@
             }
         }
 
-        function resetProductForm() {
+        function resetProductForm(force = false) {
+            // 🛑 Protect manual form reset
+            if (isDirty && !force) {
+                if (!confirm("Discard unsaved changes?")) return;
+            }
+
             ['new-name', 'new-id', 'new-desc', 'new-img'].forEach(id => {
                 document.getElementById(id).value = '';
             });
+
             document.getElementById('new-id').disabled = false;
             document.getElementById('new-img-file').value = '';
+
+            const preview = document.getElementById('img-preview');
+            preview.src = '';
+            preview.style.display = 'none';
+
+            editingProductIndex = null;
+            isDirty = false;
+            originalProductSnapshot = null;
+
             document.getElementById('btn-add-product').innerText = "Create Product";
         }
+
+        // 🛑 Detect changes on text inputs
+        ['new-name', 'new-desc', 'new-img'].forEach(id => {
+            document.getElementById(id).addEventListener('input', () => {
+                isDirty = true;
+            });
+        });
+
+        // 🛑 Detect file selection
+        document.getElementById('new-img-file').addEventListener('change', e => {
+            isDirty = true;
+            
+            const file = e.target.files[0];
+            if (!file) return;
+            const preview = document.getElementById('img-preview');
+            preview.src = URL.createObjectURL(file);
+            preview.style.display = 'block';
+        });
+
+        // 🛑 Protect page refresh / tab close
+        window.addEventListener('beforeunload', e => {
+            if (!isDirty) return;
+            e.preventDefault();
+            e.returnValue = '';
+        });
 
         function removeItem(type, index) {
             if(confirm('Delete from list?')) {
