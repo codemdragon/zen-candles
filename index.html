@@ -22,6 +22,10 @@
             --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
+        html {
+            scroll-behavior: smooth; /* Enables smooth scrolling */
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
@@ -95,7 +99,6 @@
             transform: scale(1.05); transition: transform 6s ease, opacity 1.5s ease-in-out;
         }
         .slide.active { opacity: 1; transform: scale(1); }
-        /* Gradient overlay for text readability */
         .carousel::after {
             content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6));
@@ -207,17 +210,78 @@
         }
         #toast.show { visibility: visible; opacity: 1; transform: translateX(-50%) translateY(0); }
 
-        /* --- 8. SCROLL REVEAL ANIMATION CLASS --- */
-        .reveal {
-            opacity: 0; transform: translateY(40px); transition: all 0.8s ease;
-        }
+        /* --- 8. SCROLL REVEAL --- */
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s ease; }
         .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* --- 9. FOOTER --- */
+        footer {
+            background-color: #2C2C2C;
+            color: #F9F7F2;
+            padding: 5rem 5% 2rem 5%;
+            text-align: center;
+        }
+        .footer-brand {
+            margin-bottom: 3rem;
+        }
+        .footer-brand h2 {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        .footer-brand p {
+            font-size: 1.1rem;
+            font-weight: 300;
+            margin-bottom: 0.2rem;
+        }
+        .footer-brand .zen-highlight {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1.3rem;
+            color: #fff;
+            margin-top: 0.5rem;
+        }
+
+        .footer-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .location {
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .social-icons {
+            display: flex;
+            gap: 20px;
+        }
+        .social-icons a {
+            font-size: 1.5rem;
+            color: #fff;
+        }
+        .social-icons a:hover { color: var(--primary); }
+
+        .credits {
+            font-size: 0.85rem;
+            color: #888;
+        }
+        .credits a {
+            color: var(--primary);
+            font-weight: 500;
+        }
 
         /* Responsive */
         @media(max-width: 768px) {
             .hero-text h1 { font-size: 2.5rem; }
             .size-grid { gap: 1.5rem; }
             .size-card { min-width: 100%; }
+            .footer-brand h2 { font-size: 1.6rem; }
         }
     </style>
 </head>
@@ -234,7 +298,6 @@
     <!-- HEADER -->
     <header id="main-header">
         <a href="#" class="logo">Zen Candles</a>
-        <!-- UPDATED LINK HERE -->
         <a href="https://instagram.com/zen.candle_" target="_blank" class="social-link" aria-label="Instagram">
             <i class="fab fa-instagram"></i>
         </a>
@@ -246,6 +309,7 @@
         <div class="hero-text">
             <h1>Ignite Your Senses</h1>
             <p>Hand-poured luxury for your sanctuary.</p>
+            <!-- Smooth scroll link -->
             <a href="#collection" class="hero-btn">View Collection</a>
         </div>
     </div>
@@ -271,6 +335,33 @@
             <!-- Injected via JS -->
         </div>
     </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-brand reveal">
+            <h2>100% Soy Wax Candles</h2>
+            <p>Just pure, Slow-burning peace</p>
+            <p class="zen-highlight">Find your Zen</p>
+        </div>
+
+        <div class="footer-info reveal">
+            <div class="location">
+                <i class="fas fa-map-marker-alt"></i> Karachi, Pakistan
+            </div>
+            <div class="social-icons">
+                <a href="https://web.facebook.com/people/Zen-Candles/61575141196541/" target="_blank" aria-label="Facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="https://instagram.com/zen.candle_" target="_blank" aria-label="Instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="credits reveal">
+            <p>&copy; 2024 Zen Candles. Designed by <a href="https://codemsportfolio.netlify.app/" target="_blank">Codem</a>.</p>
+        </div>
+    </footer>
 
     <!-- TOAST NOTIFICATION -->
     <div id="toast"><i class="fas fa-check-circle"></i> Order details copied! Redirecting...</div>
@@ -300,12 +391,11 @@
 
         function initApp() {
             renderCarousel(); renderSizes(); renderProducts(); hidePreloader();
-            initScrollReveal(); // Init scroll animations
+            initScrollReveal();
         }
 
         function renderCarousel() {
             const container = document.getElementById('carousel');
-            // We insert slides behind the canvas
             const slidesHTML = db.carouselImages.map((url, index) => 
                 `<div class="slide ${index === 0 ? 'active' : ''}" style="background-image: url('${url}')"></div>`
             ).join('');
@@ -379,7 +469,6 @@
                 toast.className = "show";
                 setTimeout(() => { 
                     toast.className = ""; 
-                    // UPDATED LINK HERE
                     window.location.href = "https://instagram.com/zen.candle_"; 
                 }, 2500);
             });
@@ -387,14 +476,12 @@
         
         // --- 2. NEW UI LOGIC ---
 
-        // Header Scroll Effect
         window.addEventListener('scroll', () => {
             const header = document.getElementById('main-header');
             if (window.scrollY > 50) header.classList.add('scrolled');
             else header.classList.remove('scrolled');
         });
 
-        // Scroll Reveal Animation (Intersection Observer)
         function initScrollReveal() {
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
