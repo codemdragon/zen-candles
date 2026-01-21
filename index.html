@@ -80,31 +80,29 @@
             border-bottom: 1px solid var(--border-light);
         }
         
-        /* MODIFIED LOGO STYLES FOR EMPHASIS */
+        /* LOGO STYLES (Previously Updated) */
         .logo {
             display: flex;
             align-items: center;
-            gap: 15px; /* Increased gap */
+            gap: 15px;
             font-family: 'Cormorant Garamond', serif;
-            font-size: 2.2rem; /* Increased font size */
+            font-size: 2.2rem;
             font-weight: 700;
             color: var(--text-main);
             letter-spacing: 1px;
             text-decoration: none;
         }
         .logo-img {
-            width: 65px; /* Increased width */
-            height: 65px; /* Increased height */
+            width: 65px;
+            height: 65px;
             border-radius: 50%;
             object-fit: cover;
-            /* New "Pop" Styles: Double ring border using box-shadow */
             box-shadow: 
-                0 0 0 3px var(--bg-cream), /* Inner spacing ring */
-                0 0 0 5px var(--primary), /* Outer brand color ring */
-                0 8px 20px rgba(0,0,0,0.15); /* Drop shadow */
+                0 0 0 3px var(--bg-cream), 
+                0 0 0 5px var(--primary),
+                0 8px 20px rgba(0,0,0,0.15);
             transition: var(--transition);
         }
-        /* Hover Effect for Logo */
         .logo:hover .logo-img {
             transform: rotate(5deg) scale(1.05);
             box-shadow: 
@@ -114,7 +112,6 @@
         }
         .logo-text {
             white-space: nowrap;
-            /* Subtle text shadow for better readability */
             text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
         }
 
@@ -149,10 +146,8 @@
         }
         .hero-text h1 {
             font-size: 4rem; margin-bottom: 1rem; font-weight: 400;
-            color: #E07A5F; /* soft warm red */
-            text-shadow: 
-                0 4px 10px rgba(0,0,0,0.35),
-                0 0 25px rgba(224, 122, 95, 0.25);
+            color: #E07A5F;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.35), 0 0 25px rgba(224, 122, 95, 0.25);
             opacity: 0; transform: translateY(30px); animation: heroUp 1s ease forwards 0.5s;
         }
         .hero-text p {
@@ -220,7 +215,7 @@
         .product-name { font-size: 1.6rem; margin-bottom: 0.5rem; color: var(--text-main); }
         .product-desc { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.5; }
         
-        .size-selector { display: flex; justify-content: center; gap: 10px; margin-bottom: 1.5rem; }
+        .size-selector { display: flex; justify-content: center; gap: 10px; margin-bottom: 1.5rem; flex-wrap: wrap; }
         .size-btn {
             border: 1px solid var(--border-light); padding: 8px 18px; border-radius: 20px;
             background: transparent; font-size: 0.85rem; color: var(--text-muted);
@@ -262,66 +257,91 @@
             padding: 5rem 5% 2rem 5%;
             text-align: center;
         }
-        .footer-brand {
-            margin-bottom: 3rem;
-        }
-        .footer-brand h2 {
-            font-size: 2rem;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-        }
-        .footer-brand p {
-            font-size: 1.1rem;
-            font-weight: 300;
-            margin-bottom: 0.2rem;
-        }
+        .footer-brand { margin-bottom: 3rem; }
+        .footer-brand h2 { font-size: 2rem; color: var(--primary); margin-bottom: 0.5rem; }
+        .footer-brand p { font-size: 1.1rem; font-weight: 300; margin-bottom: 0.2rem; }
         .footer-brand .zen-highlight {
-            font-family: 'Cormorant Garamond', serif;
-            font-style: italic;
-            font-size: 1.3rem;
-            color: #fff;
-            margin-top: 0.5rem;
+            font-family: 'Cormorant Garamond', serif; font-style: italic;
+            font-size: 1.3rem; color: #fff; margin-top: 0.5rem;
         }
-
         .footer-info {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1.5rem;
-            margin-bottom: 3rem;
-            padding-bottom: 2rem;
+            display: flex; flex-direction: column; align-items: center;
+            gap: 1.5rem; margin-bottom: 3rem; padding-bottom: 2rem;
             border-bottom: 1px solid rgba(255,255,255,0.1);
         }
-        .location {
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .social-icons {
-            display: flex;
-            gap: 20px;
-        }
-        .social-icons a {
-            font-size: 1.5rem;
-            color: #fff;
-        }
+        .location { font-size: 1rem; display: flex; align-items: center; gap: 8px; }
+        .social-icons { display: flex; gap: 20px; }
+        .social-icons a { font-size: 1.5rem; color: #fff; }
         .social-icons a:hover { color: var(--primary); }
+        .credits { font-size: 0.85rem; color: #888; }
+        .credits a { color: var(--primary); font-weight: 500; }
 
-        .credits {
-            font-size: 0.85rem;
-            color: #888;
-        }
-        .credits a {
-            color: var(--primary);
-            font-weight: 500;
-        }
-
-        /* Responsive */
+        /* --- RESPONSIVE OPTIMIZATIONS --- */
         @media(max-width: 768px) {
             .hero-text h1 { font-size: 2.5rem; }
-            .size-grid { gap: 1.5rem; }
-            .size-card { min-width: 100%; }
+            .section-header h2 { font-size: 2rem; }
+            .section-header { margin-bottom: 2.5rem; }
+            .products-section, .size-guide { padding: 4rem 3%; }
+            
+            /* -- 2-COLUMN LAYOUT OPTIMIZATION FOR MOBILE -- */
+            
+            /* 1. Size Grid to 2 Columns */
+            .size-grid { 
+                gap: 1rem; 
+                display: grid; 
+                grid-template-columns: repeat(2, 1fr); 
+            }
+            .size-card { 
+                min-width: 0; /* Override default */
+                padding: 1.5rem 1rem;
+                display: flex; flex-direction: column; justify-content: space-between;
+            }
+            .size-card h3 { font-size: 1.1rem; margin-bottom: 0.5rem; }
+            .size-price { font-size: 1.3rem; margin-bottom: 0.5rem; }
+            .size-card p { font-size: 0.8rem; line-height: 1.3; }
+
+            /* 2. Product Grid to 2 Columns */
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+            
+            /* Compact Product Card Styles for Mobile */
+            .product-img-wrapper { height: 160px; } /* Reduce image height */
+            
+            .product-info { padding: 1rem 0.8rem; }
+            
+            .product-name { 
+                font-size: 1.1rem; 
+                margin-bottom: 0.3rem; 
+                min-height: 2.2rem; /* Ensure 2 lines alignment */
+                display: flex; align-items: center; justify-content: center;
+            }
+            
+            .product-desc { 
+                font-size: 0.8rem;
+                margin-bottom: 1rem;
+                /* Truncate description to 2 lines on mobile for uniformity */
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+            
+            .size-selector { gap: 6px; margin-bottom: 1rem; }
+            
+            .size-btn { 
+                padding: 5px 10px; 
+                font-size: 0.7rem; 
+            }
+            
+            .order-btn { 
+                padding: 10px 12px; 
+                font-size: 0.8rem; 
+                width: 100%;
+            }
+            .order-btn i { display: none; } /* Hide icon to save space */
+            
             .footer-brand h2 { font-size: 1.6rem; }
         }
     </style>
@@ -339,7 +359,6 @@
     <!-- HEADER -->
     <header id="main-header">
         <a href="#" class="logo">
-            <!-- Ensure your image file is named exactly Zen-Logo.jpg -->
             <img src="Zen-Logo.jpg" alt="Zen Candles Logo" class="logo-img">
             <span class="logo-text">Zen Candles</span>
         </a>
@@ -354,7 +373,6 @@
         <div class="hero-text">
             <h1>Ignite Your Senses</h1>
             <p>Hand-poured luxury for your sanctuary.</p>
-            <!-- Smooth scroll link -->
             <a href="#collection" class="hero-btn">View Collection</a>
         </div>
     </div>
